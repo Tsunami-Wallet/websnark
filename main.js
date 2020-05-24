@@ -19,36 +19,53 @@
 
 /* globals window */
 
-const buildGroth16 = require("./src/groth16");
-const utils = require("./src/utils");
+const buildGroth16 = require('./src/groth16')
+const utils = require('./src/utils')
 
 buildGroth16().then((groth16) => {
-    window.groth16 = groth16;
-    window.zkSnarkProofToSolidityInput = utils.toSolidityInput;
+  window.groth16 = groth16
+  window.zkSnarkProofToSolidityInput = utils.toSolidityInput
 
-    window.genZKSnarkProofAndWitness = function (input, circuitJson, provingKey, cb) {
-        const p = utils.genWitnessAndProve(groth16, input, circuitJson, provingKey);
-        if (cb) {
-            p.then((proof) => {
-                cb(null, proof);
-            }, (err) => {
-                cb(err);
-            });
-        } else {
-            return p;
-        }
-    };
+  window.genZKSnarkProofAndWitness = function (input, circuitJson, provingKey, cb) {
+    const p = utils.genWitnessAndProve(groth16, input, circuitJson, provingKey)
+    if (cb) {
+      p.then((proof) => {
+        cb(null, proof)
+      }, (err) => {
+        cb(err)
+      })
+    } else {
+      return p
+    }
+  }
 
-    window.genZKSnarkProof = function (witness, provingKey, cb) {
-        const p = groth16.proof(witness, provingKey);
-        if (cb) {
-            p.then((proof) => {
-                cb(null, proof);
-            }, (err) => {
-                cb(err);
-            });
-        } else {
-            return p;
-        }
-    };
-});
+  window.genZKSnarkProof = function (witness, provingKey, cb) {
+    const p = groth16.proof(witness, provingKey)
+    if (cb) {
+      p.then((proof) => {
+        cb(null, proof)
+      }, (err) => {
+        cb(err)
+      })
+    } else {
+      return p
+    }
+  }
+
+  /**
+     * Parses Tornado.cash note
+     * @param noteString the note
+     */
+  window.withdraw = function (note, recipient, provingKey, cb) {
+    const p = utils.withdraw(note, recipient, groth16, provingKey)
+    if (cb) {
+      p.then((tx) => {
+        cb(null, tx)
+      }, (err) => {
+        cb(err)
+      })
+    } else {
+      return p
+    }
+  }
+})

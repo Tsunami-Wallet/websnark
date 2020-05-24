@@ -9,7 +9,7 @@ var provingKey;
 
 function onLoad() {
 
-    fetch("proving_key.bin").then( (response) => {
+    fetch("withdraw_proving_key.bin").then( (response) => {
         return response.arrayBuffer();
     }).then( (b) => {
         provingKey = b;
@@ -22,17 +22,30 @@ function onLoad() {
     });
 }
 
-function calcProof() {
+function depositNote() {
+
+}
+
+function withdrawNote() {
     const start = new Date().getTime();
     document.getElementById("time").innerHTML = "processing....";
     document.getElementById("proof").innerHTML = "";
 
-    window.genZKSnarkProof(witness, provingKey).then((p)=> {
+    const note = 'tornado-eth-1-42-0x843b31aba77e9c50ed802b810cc3b3b7d34a81a7bddbde309dcf7a139a7232d1e6fd39026d8e676370f4ed5c5b64ae5d1df025f7dde900b28bdde0aed889'
+    console.log(window.groth16)
+    window.withdraw(note, '0xe45D59f09A3c84bD083EE8a3148075a392187ceF', provingKey).then((p)=>{
         const end = new Date().getTime();
         const time = end - start;
         document.getElementById("time").innerHTML = `Time to compute: ${time}ms`;
-        document.getElementById("proof").innerHTML = JSON.stringify(p, null, 1);
-    });
+        document.getElementById("proof").innerHTML = JSON.stringify(p, null, 1);     
+    })
+
+    // window.genZKSnarkProof(witness, provingKey).then((p)=> {
+    //     const end = new Date().getTime();
+    //     const time = end - start;
+    //     document.getElementById("time").innerHTML = `Time to compute: ${time}ms`;
+    //     document.getElementById("proof").innerHTML = JSON.stringify(p, null, 1);
+    // });
 }
 
 function test(funcName, a, b, r, n) {
@@ -83,9 +96,10 @@ function test2() {
 
 </script>
 <body onLoad="onLoad()">
-<h1>iden3</h1>
-<h2>Zero knowledge proof generator</h2>
-<button onClick="calcProof()">Test</button>
+<h1>tsunami wallet webview</h1>
+<h2>tornado wallet</h2>
+<button onClick="depositNote()">deposit</button>
+<button onClick="withdrawNote()">withdraw</button>
 <div id="time"></div>
 <pre id="proof"></pre>
 
