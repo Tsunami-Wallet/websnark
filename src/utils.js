@@ -113,7 +113,7 @@ const crypto = require('crypto')
 const MERKLE_TREE_HEIGHT = 20
 const RPC_URL = 'https://kovan.infura.io/v3/0279e3bdf3ee49d0b547c643c2ef78ef'
 const PRIVATE_KEY = 'F8004254B528D77D390CA3F969598C208C4A3C95D0491B6E11611232F20B4586' // 0xe45D59f09A3c84bD083EE8a3148075a392187ceF
-const CONTRACT_ADDRESS = '0xD6a6AC46d02253c938B96D12BE439F570227aE8E'
+const CONTRACT_ADDRESS = '0x8b3f5393ba08c24cc7ff5a66a832562aab7bc95f'
 const AMOUNT = '0.1'
 
 /** Generate random number of specified byte length */
@@ -187,7 +187,7 @@ async function generateSnarkProof (deposit, recipient, groth16, proving_key) {
     root: root,
     nullifierHash: deposit.nullifierHash,
     recipient: bigInt2(recipient),
-    relayer: bigInt2(recipient),
+    relayer: 0,
     fee: 0,
     refund: 0,
 
@@ -199,6 +199,7 @@ async function generateSnarkProof (deposit, recipient, groth16, proving_key) {
   }
 
   console.log('Generating SNARK proof...')
+  console.log(input)
   const proofData = await genWitnessAndProve(groth16, input, circuit, proving_key)
   const { proof } = toSolidityInput(proofData)
 

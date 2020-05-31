@@ -15,11 +15,11 @@ function onLoad() {
         provingKey = b;
     });
 
-    fetch("witness.bin").then( (response) => {
-        return response.arrayBuffer();
-    }).then( (b) => {
-        witness = b;
-    });
+    // fetch("witness.bin").then( (response) => {
+    //     return response.arrayBuffer();
+    // }).then( (b) => {
+    //     witness = b;
+    // });
 }
 
 function depositNote() {
@@ -31,8 +31,8 @@ function withdrawNote() {
     document.getElementById("time").innerHTML = "processing....";
     document.getElementById("proof").innerHTML = "";
 
-    const note = 'tornado-eth-1-42-0x843b31aba77e9c50ed802b810cc3b3b7d34a81a7bddbde309dcf7a139a7232d1e6fd39026d8e676370f4ed5c5b64ae5d1df025f7dde900b28bdde0aed889'
-    console.log(window.groth16)
+    const note = 'tornado-eth-0.1-42-0xd62788e62d5aad8f48015de42da3d4a77e4a340b002771b2eb48e62f1b40769e8eaf738a944d951c01ff8f048db4f238fb2f20d74c0eea339e6374587cb7'
+    console.log(note)
     window.withdraw(note, '0xe45D59f09A3c84bD083EE8a3148075a392187ceF', provingKey).then((p)=>{
         const end = new Date().getTime();
         const time = end - start;
