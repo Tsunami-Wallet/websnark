@@ -9,30 +9,43 @@ var provingKey;
 
 function onLoad() {
 
-    fetch("proving_key.bin").then( (response) => {
+    fetch("withdraw_proving_key.bin").then( (response) => {
         return response.arrayBuffer();
     }).then( (b) => {
         provingKey = b;
     });
 
-    fetch("witness.bin").then( (response) => {
-        return response.arrayBuffer();
-    }).then( (b) => {
-        witness = b;
-    });
+    // fetch("witness.bin").then( (response) => {
+    //     return response.arrayBuffer();
+    // }).then( (b) => {
+    //     witness = b;
+    // });
 }
 
-function calcProof() {
+function depositNote() {
+
+}
+
+function withdrawNote() {
     const start = new Date().getTime();
     document.getElementById("time").innerHTML = "processing....";
     document.getElementById("proof").innerHTML = "";
-
-    window.genZKSnarkProof(witness, provingKey).then((p)=> {
+    const note = 'tornado-eth-0.1-42-0xa5e88f2f0ce76246b8eb5b94a6991785545f661dc4a7688558bce9343e5866aaf2290dd0faae9bac8dfebb8c17a7a54f62ff17957729fa3b31e925b1cce1'
+    //const note = ''
+    console.log(note)
+    window.withdraw(note, '0xe45D59f09A3c84bD083EE8a3148075a392187ceF', provingKey).then((p)=>{
         const end = new Date().getTime();
         const time = end - start;
         document.getElementById("time").innerHTML = `Time to compute: ${time}ms`;
-        document.getElementById("proof").innerHTML = JSON.stringify(p, null, 1);
-    });
+        document.getElementById("proof").innerHTML = JSON.stringify(p, null, 1);     
+    })
+
+    // window.genZKSnarkProof(witness, provingKey).then((p)=> {
+    //     const end = new Date().getTime();
+    //     const time = end - start;
+    //     document.getElementById("time").innerHTML = `Time to compute: ${time}ms`;
+    //     document.getElementById("proof").innerHTML = JSON.stringify(p, null, 1);
+    // });
 }
 
 function test(funcName, a, b, r, n) {
@@ -83,9 +96,10 @@ function test2() {
 
 </script>
 <body onLoad="onLoad()">
-<h1>iden3</h1>
-<h2>Zero knowledge proof generator</h2>
-<button onClick="calcProof()">Test</button>
+<h1>tsunami wallet webview</h1>
+<h2>tornado wallet</h2>
+<button onClick="depositNote()">deposit</button>
+<button onClick="withdrawNote()">withdraw</button>
 <div id="time"></div>
 <pre id="proof"></pre>
 
