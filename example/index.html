@@ -30,10 +30,14 @@ function withdrawNote() {
     const start = new Date().getTime();
     document.getElementById("time").innerHTML = "processing....";
     document.getElementById("proof").innerHTML = "";
-    const note = 'tornado-eth-0.1-42-0xa5e88f2f0ce76246b8eb5b94a6991785545f661dc4a7688558bce9343e5866aaf2290dd0faae9bac8dfebb8c17a7a54f62ff17957729fa3b31e925b1cce1'
+    const url = new URL(window.location.href)
+    console.log(url)
+    const note = url.searchParams.get("note");
+    const destination = url.searchParams.get("destination");
+    //const note = 'tornado-eth-0.1-42-0x24439f306aac2297716f898df0abe5aeff7c7f73feb61789b1a1098e00e93d87dbf39b83e8a0e998b2e6d14dadfff70d19bf612f99ad0e9a42558de336f6'
     //const note = ''
     console.log(note)
-    window.withdraw(note, '0xe45D59f09A3c84bD083EE8a3148075a392187ceF', provingKey).then((p)=>{
+    window.withdraw(note, destination, provingKey).then((p)=>{
         const end = new Date().getTime();
         const time = end - start;
         document.getElementById("time").innerHTML = `Time to compute: ${time}ms`;
